@@ -1,6 +1,6 @@
 class ExpertSystem {
   constructor() {
-    this.knoledgeBase = [];
+    this.knoledgeBase = {};
   }
 
   addEntity(entity, entityName) {
@@ -8,7 +8,7 @@ class ExpertSystem {
   }
 
   doesEntityMatch(entity, properties) {
-    const keysForCheck = properties.keys();
+    const keysForCheck = Object.keys(properties);
     keysForCheck.forEach(key => {
       if (entity[key] !== properties[key]) return false;
     });
@@ -16,8 +16,8 @@ class ExpertSystem {
   }
 
   checkEntity(characteristics) {
-    const entityName = this.knoledgeBase.findIndex(it =>
-      this.doesEntityMatch(it, characteristics)
+    const entityName = Object.keys(this.knoledgeBase).find(it =>
+      this.doesEntityMatch(this.knoledgeBase[it], characteristics)
     );
 
     if (!entityName || entityName === -1) {

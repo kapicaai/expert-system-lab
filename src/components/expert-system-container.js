@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import EntityForm from './new-entity-form';
 
 import getSystemCore from '../expert-system-core';
-import { Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 class ExpertSystemContainer extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class ExpertSystemContainer extends Component {
       result: ''
     };
 
-    this.addEntity = this.addEntity.apply(this);
+    this.addEntity = this.addEntity.bind(this);
     this.checkEntity = this.checkEntity.bind(this);
   }
 
@@ -22,6 +22,7 @@ class ExpertSystemContainer extends Component {
   }
 
   addEntity(fields, entityName) {
+    console.log('reached');
     this.state.systemCore.addEntity(fields, entityName);
   }
 
@@ -42,16 +43,24 @@ class ExpertSystemContainer extends Component {
 
   render() {
     return (
-      <div>
-        Add Entity
-        {this.renderNewEntityForm()}
-        <hr />
-        Check Entity
-        {this.renderEntityToCheckForm()}
-        <hr />
-        All fields in system
-        {this.state.systemCore.knoledgeBase}
-      </div>
+      <Row>
+        <Col sm="4">
+          Add Entity
+          {this.renderNewEntityForm()}
+        </Col>
+        <Col sm="4">
+          Check Entity
+          {this.renderEntityToCheckForm()}
+        </Col>
+        <Col sm="4">
+          RESULT
+          <br />
+          {this.renderResult()}
+          <br />
+          All fields in system:
+          {Object.keys(this.state.systemCore.knoledgeBase).join(', ')}
+        </Col>
+      </Row>
     );
   }
 }
