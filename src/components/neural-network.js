@@ -44,12 +44,14 @@ class NeuralNetworkContainer extends Component {
 
   componentWillMount() {
     this.network.init(data.healthy[0]);
-    for (let i = 0; i < 29; i++) {
-      if (data.healthy[i]) {
-        this.network.adjustWeights(data.healthy[i], 1);
-      }
-      if (data.sick[i]) {
-        this.network.adjustWeights(data.sick[i], 0);
+    for (let j = 0; j < 20; j++) {
+      for (let i = 0; i < 26; i++) {
+        if (data.healthy[i]) {
+          this.network.adjustWeights(data.healthy[i], 1);
+        }
+        if (data.sick[i]) {
+          this.network.adjustWeights(data.sick[i], 0);
+        }
       }
     }
   }
