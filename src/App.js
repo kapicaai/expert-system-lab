@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import ExpertSystem from './components/expert-system-container';
+import NeuralNetwork from './components/neural-network';
 
 class App extends Component {
   render() {
@@ -12,6 +13,8 @@ class App extends Component {
           <h1 className="App-title">Artificial Intelligence Labs</h1>
         </header>
         <ExpertSystem />
+        <hr />
+        <NeuralNetwork />
       </div>
     );
   }

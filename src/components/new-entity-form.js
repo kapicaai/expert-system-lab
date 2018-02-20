@@ -25,13 +25,16 @@ class NewEntityForm extends Component {
   addField(name, value) {
     const fields = { ...this.state.fields };
     fields[name] = value;
-    console.log('NEW FIELDS', fields);
     this.setState({
       fields
     });
   }
 
   onAddEntity() {
+    this.setState({
+      fields: {}
+    });
+
     this.props.onAddEntity(
       this.state.fields,
       this.refs.entityName && this.refs.entityName.value
@@ -85,17 +88,17 @@ class NewEntityForm extends Component {
         {shouldRenderName ? (
           <FormGroup>
             <ControlLabel>Entity Name: </ControlLabel>
-            <input class="form-control" type="text" ref="entityName" />
+            <input className="form-control" type="text" ref="entityName" />
           </FormGroup>
         ) : null}
         {this.renderExistingFields()}
         <FormGroup>
           <ControlLabel>Field Name: </ControlLabel>
-          <input class="form-control" type="text" ref="fieldName" />
+          <input className="form-control" type="text" ref="fieldName" />
         </FormGroup>
         <FormGroup>
           <ControlLabel>Value: </ControlLabel>
-          <input class="form-control" type="number" ref="fieldValue" />
+          <input className="form-control" type="number" ref="fieldValue" />
         </FormGroup>
         <ButtonGroup>
           <Button onClick={this.onAddButtonClick}>One more</Button>

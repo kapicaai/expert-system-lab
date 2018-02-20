@@ -44,15 +44,15 @@ class ExpertSystemContainer extends Component {
   render() {
     return (
       <Row>
-        <Col sm="4">
+        <Col sm={4}>
           Add Entity
           {this.renderNewEntityForm()}
         </Col>
-        <Col sm="4">
+        <Col sm={4}>
           Check Entity
           {this.renderEntityToCheckForm()}
         </Col>
-        <Col sm="4">
+        <Col sm={4}>
           RESULT
           <br />
           {this.renderResult()}
