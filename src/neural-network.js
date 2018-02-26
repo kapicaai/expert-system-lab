@@ -33,13 +33,13 @@ class Perceptron {
 
   // Вычисляем результат с текущими весами
   evaluate(inputs) {
-    console.log('INPUTS', inputs);
+    //console.log('INPUTS', inputs);
     return this.activate(this.weightedSum(inputs));
   }
 
   // Heaviside в качестве функции активации
   activate(value) {
-    console.log('VALUE', value);
+    //console.log('VALUE', value);
     return value >= 0 ? 1 : 0;
   }
 

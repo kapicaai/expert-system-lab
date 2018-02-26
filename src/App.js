@@ -4,6 +4,7 @@ import './App.css';
 
 import ExpertSystem from './components/expert-system-container';
 import NeuralNetwork from './components/neural-network';
+import PatternRecognition from './components/pattern-recognition';
 
 class App extends Component {
   render() {
@@ -15,6 +16,8 @@ class App extends Component {
         <ExpertSystem />
         <hr />
         <NeuralNetwork />
+        <hr />
+        <PatternRecognition />
       </div>
     );
   }
