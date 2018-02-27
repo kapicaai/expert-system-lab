@@ -13,12 +13,12 @@ export function minMaxAvrCounter(trainingData) {
 
     //находим и добавляем в масссив максимальное значение текущего параметра
     let maxParamValue = Math.max(...allParamsValues);
-    console.log(`max param ${paramsIndex} : ${maxParamValue}`);
+    // console.log(`max param ${paramsIndex} : ${maxParamValue}`);
     maxParamsArray.push(maxParamValue);
 
     //находим и добавляем в масссив минимальное значение текущего параметра
     let minParamValue = Math.min(...allParamsValues);
-    console.log(`min param ${paramsIndex} : ${minParamValue}`);
+    // console.log(`min param ${paramsIndex} : ${minParamValue}`);
     minParamsArray.push(minParamValue);
   }
 

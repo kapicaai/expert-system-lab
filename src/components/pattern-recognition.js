@@ -5,22 +5,36 @@ import { minMaxAvrCounter, diffCouter } from '../pattern-recognition';
 import { Col, Row } from 'react-bootstrap';
 
 class PatternRecognition extends Component {
-  goodParams = (avrParamsHealthy, avrParamsSick, diffAvrParams) => {
+  goodParams = (avrParamsHealthy, avrParamsSick, rawAvrParams) => {
     let goodParams = [];
-    for (let index = 0; index < diffAvrParams.length; index++) {
-      if (
-        avrParamsHealthy[index] >= avrParamsSick[index] &&
-        diffAvrParams[index] >= avrParamsHealthy * 0.15
-      ) {
+    for (let index = 0; index < rawAvrParams.length; index++) {
+      if (Math.abs(avrParamsHealthy[index] - rawAvrParams[index]) > 1) {
         goodParams.push(index);
-      } else if (
-        avrParamsHealthy[index] < avrParamsSick[index] &&
-        diffAvrParams[index] >= avrParamsSick[index] * 0.15
-      ) {
+      } else if (Math.abs(avrParamsSick[index] - rawAvrParams[index]) > 1) {
         goodParams.push(index);
       }
     }
     return goodParams;
+  };
+
+  dataNormalization = data => {
+    let normalizedData = [];
+    const minParamsArray = [...minMaxAvrCounter(data).minParamsArray];
+    const maxParamsArray = [...minMaxAvrCounter(data).maxParamsArray];
+
+    console.log(data[0][0] - minParamsArray[0]);
+
+    for (let caseIndex = 0; caseIndex < data.length; caseIndex++) {
+      normalizedData[caseIndex] = [];
+      for (let propIndex = 0; propIndex < data[caseIndex].length; propIndex++) {
+        normalizedData[caseIndex][propIndex] = Math.abs(
+          (data[caseIndex][propIndex] - minParamsArray[propIndex]) /
+            (maxParamsArray[propIndex] - minParamsArray[propIndex])
+        ).toFixed(3);
+      }
+    }
+
+    return normalizedData;
   };
 
   render() {
@@ -48,7 +62,7 @@ class PatternRecognition extends Component {
         </Col> */}
         <Col md={12}>
           {'Diff healthy params: ' +
-            minMaxAvrCounter(data.healthy).diffParamsArray.toString()}
+            minMaxAvrCounter(data.healthy).averageParamsArray.toString()}
         </Col>
 
         {/* <Col md={6}>
@@ -57,14 +71,11 @@ class PatternRecognition extends Component {
         </Col> */}
         <Col md={12}>
           {'Diff sick params: ' +
-            minMaxAvrCounter(data.sick).diffParamsArray.toString()}
+            minMaxAvrCounter(data.sick).averageParamsArray.toString()}
         </Col>
         <Col md={12}>
           {'Diff avr params: ' +
-            diffCouter(
-              minMaxAvrCounter(data.sick).averageParamsArray,
-              minMaxAvrCounter(data.healthy).averageParamsArray
-            ).toString()}
+            minMaxAvrCounter(rawData).averageParamsArray.toString()}
         </Col>
 
         <Col md={12}>
@@ -72,11 +83,12 @@ class PatternRecognition extends Component {
             this.goodParams(
               minMaxAvrCounter(data.healthy).averageParamsArray,
               minMaxAvrCounter(data.sick).averageParamsArray,
-              diffCouter(
-                minMaxAvrCounter(data.sick).averageParamsArray,
-                minMaxAvrCounter(data.healthy).averageParamsArray
-              )
+              minMaxAvrCounter(rawData).averageParamsArray
             ).toString()}
+        </Col>
+        <Col md={12}>
+          {'Normalized data: ' +
+            this.dataNormalization(rawData).map(it => it.toString() + ' | ')}
         </Col>
       </Row>
     );
