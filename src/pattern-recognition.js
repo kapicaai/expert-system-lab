@@ -51,3 +51,23 @@ export function avrCounter(firstArray, secondArray) {
   }
   return averageParamsArray;
 }
+
+export function dataNormalization(data) {
+  let normalizedData = [];
+  const minParamsArray = [...minMaxAvrCounter(data).minParamsArray];
+  const maxParamsArray = [...minMaxAvrCounter(data).maxParamsArray];
+
+  console.log(data[0][0] - minParamsArray[0]);
+
+  for (let caseIndex = 0; caseIndex < data.length; caseIndex++) {
+    normalizedData[caseIndex] = [];
+    for (let propIndex = 0; propIndex < data[caseIndex].length; propIndex++) {
+      normalizedData[caseIndex][propIndex] = Math.abs(
+        (data[caseIndex][propIndex] - minParamsArray[propIndex]) /
+          (maxParamsArray[propIndex] - minParamsArray[propIndex])
+      ).toFixed(3);
+    }
+  }
+
+  return normalizedData;
+};

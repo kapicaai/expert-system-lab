@@ -37,58 +37,49 @@ class PatternRecognition extends Component {
     return normalizedData;
   };
 
+  getAverages(data) {
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    let averages = [];
+    for(let i = 0; i < 14; i++) {
+      const paramInEntries = data.map(entry => entry[i]);
+      averages.push(paramInEntries.reduce(reducer)/paramInEntries.length);
+    }
+    return averages;
+  }
+
+  checkAttribute(averageH, averageS) {
+    if(Math.abs(averageH - averageS) > 0.15) {
+      return true;
+    }
+    return false;
+  }
+
+
   render() {
+    const normalizedHealthy = this.dataNormalization(data.healthy);
+    const normalizedSick = this.dataNormalization(data.sick);
+
+    const healthyAverages = this.getAverages(normalizedHealthy);
+    const sickAverages = this.getAverages(normalizedSick);
+
+    const goodAttributes = [];
+
+    healthyAverages.forEach((element, index) => {
+      if(this.checkAttribute(element, sickAverages[index])) {
+        goodAttributes.push(index);
+      }
+    });
+
     return (
       <Row cols={2} style={{ padding: '3em' }}>
-        {/* <Col md={6}>
-          {'Max healthy params: ' +
-            minMaxAvrCounter(data.healthy).maxParamsArray.toString()}
-        </Col>
-        <Col md={6}>
-          {'Min healthy params: ' +
-            minMaxAvrCounter(data.healthy).minParamsArray.toString()}
-        </Col>
-        <Col md={6}>
-          {'Max sick params:' +
-            minMaxAvrCounter(data.sick).maxParamsArray.toString()}
-        </Col>
-        <Col md={6}>
-          {'Min sick params:' +
-            minMaxAvrCounter(data.sick).minParamsArray.toString()}
-        </Col>
-        <Col md={6}>
-          {'Avr healthy params: ' +
-            minMaxAvrCounter(data.healthy).averageParamsArray.toString()}
-        </Col> */}
-        <Col md={12}>
-          {'Diff healthy params: ' +
-            minMaxAvrCounter(data.healthy).averageParamsArray.toString()}
-        </Col>
-
-        {/* <Col md={6}>
-          {'Avr sick params:' +
-            minMaxAvrCounter(data.sick).averageParamsArray.toString()}
-        </Col> */}
-        <Col md={12}>
-          {'Diff sick params: ' +
-            minMaxAvrCounter(data.sick).averageParamsArray.toString()}
-        </Col>
-        <Col md={12}>
-          {'Diff avr params: ' +
-            minMaxAvrCounter(rawData).averageParamsArray.toString()}
-        </Col>
-
-        <Col md={12}>
-          {'Good params are: ' +
-            this.goodParams(
-              minMaxAvrCounter(data.healthy).averageParamsArray,
-              minMaxAvrCounter(data.sick).averageParamsArray,
-              minMaxAvrCounter(rawData).averageParamsArray
-            ).toString()}
-        </Col>
         <Col md={12}>
           {'Normalized data: ' +
             this.dataNormalization(rawData).map(it => it.toString() + ' | ')}
+        </Col>
+
+        <Col md={12}>
+          Good attributes
+          {goodAttributes.toString()}
         </Col>
       </Row>
     );
